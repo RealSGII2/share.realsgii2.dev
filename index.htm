@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Badge Generator</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link
             rel="preload"
             href="http://realsgii2.dev/share/button/standard.svg"
@@ -35,7 +36,7 @@
                 width: 100%;
                 max-width: 600px;
                 margin: 0 auto;
-                padding: 48px;
+                padding: 16px;
 
                 color-scheme: dark;
 
@@ -100,11 +101,14 @@
                 background-color: #181c20;
                 border-radius: 6px;
                 border: solid 1px rgba(255, 255, 255, 0.15);
+
+                overflow: auto;
             }
 
             pre {
                 font-family: monospace;
                 margin: 0;
+                margin-right: 12px;
             }
 
             pre .element {
@@ -158,6 +162,12 @@
 
                 to {
                     --colour: #4d94ff;
+                }
+            }
+
+            @media screen and (max-width: 600px) {
+                body {
+                    justify-content: flex-start;
                 }
             }
         </style>
