@@ -176,7 +176,7 @@
         <h1>Embed Button</h1>
 
         <select name="size" id="size">
-            <option value="standard">Standard</option>
+            <option value="standard">Standard (88 &times; 31)</option>
             <option value="small">Small</option>
             <option value="large_anim">Large</option>
         </select>
@@ -190,10 +190,16 @@
         </div>
 
         <code>
-            <pre>&lt;<span class="element">a</span> <span class="key">href</span>=<span class="value">"https://realsgii2.dev/"</span> <span class="key">target</span>=<span class="value">"_blank"</span> <span class="key">rel</span>=<span class="value">"noreferrer"</span>>
+            <pre>&lt;<span class="element">a</span>
+  <span class="key">href</span>=<span class="value">"https://realsgii2.dev/"</span>
+  <span class="key">target</span>=<span class="value">"_blank"</span>
+  <span class="key">rel</span>=<span class="value">"noreferrer"</span>
+  <span class="key">style</span>=<span class="value">"display: inline-block; width: <span data-width>88</span>px; height: <span data-height>31</span>px;"</span>
+>
   &lt;<span class="element">object</span>
-    <span class="key">height</span>=<span class="value">"31px"</span>
+    <span class="key">height</span>=<span class="value">"<span data-height>31</span>px"</span>
     <span class="key">data</span>=<span class="value">"https://realsgii2.dev/share/button/<span id="urlId">standard</span>.svg"</span>
+    <span class="key">style</span>=<span class="value">"position: relative; z-index: -1; outline: none;"</span>
   >&lt;/<span class="element">object</span>>
 &lt;/<span class="element">a</span>></pre>
         </code>
@@ -201,6 +207,18 @@
         <button>Copy</button>
 
         <script>
+            const width = {
+                standard: 88,
+                small: 122,
+                large_anim: 168,
+            }
+
+            const height = {
+                standard: 31,
+                small: 32,
+                large_anim: 48,
+            };
+
             let value = 'standard';
 
             document.querySelector('select').value = value;
@@ -215,23 +233,30 @@
                             e.target.value +
                             '.svg',
                     );
-                document.querySelector('#example').setAttribute(
-                    'height',
-                    {
-                        standard: 31,
-                        small: 32,
-                        large_anim: 48,
-                    }[e.target.value] + 'px',
-                );
+                document
+                    .querySelector('#example')
+                    .setAttribute('height', [e.target.value] + 'px');
                 document.querySelector('#urlId').innerText = e.target.value;
+
+                for (const element of document.querySelectorAll('span[data-width]'))
+                    element.innerText = width[value];
+
+                for (const element of document.querySelectorAll('span[data-height]'))
+                    element.innerText = height[value];
             });
 
             document.querySelector('button').addEventListener('click', () => {
                 navigator.clipboard.writeText(
-                    `<a href="https://realsgii2.dev/" target="_blank" rel="noreferrer">
+                    `<a
+  href="https://realsgii2.dev/"
+  target="_blank"
+  rel="noreferrer"
+  style="display: inline-block; width: ${width[value]}px; height: ${height[value]}px;"
+>
   <object
-    height="31px"
+    height="${height[value]}px"
     data="https://realsgii2.dev/share/button/${value}.svg"
+    style="position: relative; z-index: -1; outline: none;"
   ></object>
 </a>`.trim(),
                 );
