@@ -1,0 +1,231 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Badge Generator</title>
+        <link
+            rel="preload"
+            href="http://realsgii2.dev/share/button/standard.svg"
+        />
+
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+
+            @property --colour {
+                syntax: '<color>';
+                initial-value: black;
+                inherits: true;
+            }
+
+            * {
+                box-sizing: border-box;
+                font-family: inherit;
+            }
+
+            html,
+            body {
+                height: 100%;
+            }
+
+            body {
+                background-color: #202228;
+                color: white;
+
+                font-family: 'Geist', sans-serif;
+
+                width: 100%;
+                max-width: 600px;
+                margin: 0 auto;
+                padding: 48px;
+
+                color-scheme: dark;
+
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                justify-content: center;
+            }
+
+            body > h1 {
+                margin-top: 0;
+                margin-bottom: 12px;
+            }
+
+            .area {
+                width: 100%;
+                height: 100px;
+
+                background-color: #181c20;
+                background: repeating-conic-gradient(
+                        color-mix(in srgb, #181c20, white 2%) 0 25%,
+                        #181c20 0 50%
+                    )
+                    50% / 20px 20px;
+
+                border-radius: 6px;
+                border: solid 1px rgba(255, 255, 255, 0.15);
+
+                margin-block: 8px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            select {
+                height: 36px;
+                padding: 0 16px;
+
+                background-color: #181c20;
+                border-radius: 6px;
+                border: solid 1px rgba(255, 255, 255, 0.15);
+
+                cursor: pointer;
+            }
+
+            select:hover {
+                border-color: rgba(255, 255, 255, 0.35);
+            }
+
+            select:focus {
+                border-color: #4d94ff;
+                /* box-shadow: inset 0 0 0 1px white; */
+            }
+
+            code {
+                display: block;
+
+                padding: 12px;
+
+                width: 100%;
+                background-color: #181c20;
+                border-radius: 6px;
+                border: solid 1px rgba(255, 255, 255, 0.15);
+            }
+
+            pre {
+                font-family: monospace;
+                margin: 0;
+            }
+
+            pre .element {
+                color: #d41925;
+            }
+
+            pre .key {
+                color: #d15e1b;
+            }
+
+            pre .value {
+                color: #12a16a;
+            }
+
+            button {
+                --colour: #4d94ff;
+
+                height: 36px;
+                padding: 0 16px;
+
+                background-color: var(--colour);
+                border: none;
+                border-radius: 6px;
+
+                color: black;
+                font-weight: 500;
+
+                margin-top: 8px;
+
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: color-mix(in srgb, var(--colour), white 12%);
+            }
+
+            button:focus {
+                outline: solid 2px
+                    color-mix(in srgb, var(--colour), transparent 60%);
+                outline-offset: 2px;
+            }
+
+            button:focus:not(:active) {
+                animation: success 1250ms;
+            }
+
+            @keyframes success {
+                from {
+                    --colour: #1eebaa;
+                }
+
+                to {
+                    --colour: #4d94ff;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Embed Button</h1>
+
+        <select name="size" id="size">
+            <option value="standard">Standard</option>
+            <option value="small">Small</option>
+            <option value="large_anim">Large</option>
+        </select>
+
+        <div class="area">
+            <object
+                id="example"
+                height="31px"
+                data="http://realsgii2.dev/share/button/standard.svg"
+            ></object>
+        </div>
+
+        <code>
+            <pre>&lt;<span class="element">a</span> <span class="key">href</span>=<span class="value">"https://realsgii2.dev/"</span> <span class="key">target</span>=<span class="value">"_blank"</span> <span class="key">rel</span>=<span class="value">"noreferrer"</span>>
+  &lt;<span class="element">object</span>
+    <span class="key">height</span>=<span class="value">"31px"</span>
+    <span class="key">data</span>=<span class="value">"http://localhost:3000/share/button/<span id="urlId">standard</span>.svg"</span>
+  >&lt;/<span class="element">object</span>>
+&lt;/<span class="element">a</span>></pre>
+        </code>
+
+        <button>Copy</button>
+
+        <script>
+            let value = 'standard';
+
+            document.querySelector('select').value = value;
+            document.querySelector('select').addEventListener('input', e => {
+                value = e.target.value;
+
+                document
+                    .querySelector('#example')
+                    .setAttribute(
+                        'data',
+                        'https://realsgii2.dev/share/button/' +
+                            e.target.value +
+                            '.svg',
+                    );
+                document.querySelector('#example').setAttribute(
+                    'height',
+                    {
+                        standard: 31,
+                        small: 32,
+                        large_anim: 48,
+                    }[e.target.value] + 'px',
+                );
+                document.querySelector('#urlId').innerText = e.target.value;
+            });
+
+            document.querySelector('button').addEventListener('click', () => {
+                navigator.clipboard.writeText(
+                    `<a href="https://realsgii2.dev/" target="_blank" rel="noreferrer">
+  <object
+    height="31px"
+    data="http://localhost:3000/share/button/${value}.svg"
+  ></object>
+</a>`.trim(),
+                );
+            });
+        </script>
+    </body>
+</html>
